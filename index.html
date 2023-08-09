@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+           input {
+           width:90px;
+           }
+           .guesspart{
+            margin-bottom: 20px;
+           }
+           #kuraCekBtn{
+            margin-bottom:20px;
+           }
+           .lbllotoSayilari{
+            margin-bottom:20px;
+           }
+        </style>
+    </head>
+    <body>
+        <h1>Sayısal Loto Oyunu</h1>
+        <p>Aşağıdaki inputlara tahminleri giriniz;</p>
+
+        <div class="guesspart">
+            <input type="number" id="sayi1">
+            <input type="number" id="sayi2">
+            <input type="number" id="sayi3">
+            <input type="number" id="sayi4">
+            <input type="number" id="sayi5">
+            <input type="number" id="sayi6">
+            <button id="tahminButonu">Tahmin gir</button>
+            <br>
+            <p id="tahminlbl"></p>
+        </div>
+        <hr>
+        <br>
+        <button id="kuraCekBtn" disabled>Kurayı Çek</button>
+        <br>
+        <p class="lbllotoSayilari" id>Loto Sayıları</p>
+
+        <input type="number" id="lotosayi1" disabled>
+        <input type="number" id="lotosayi2" disabled>
+        <input type="number" id="lotosayi3" disabled>
+        <input type="number" id="lotosayi4" disabled>
+        <input type="number" id="lotosayi5" disabled>
+        <input type="number" id="lotosayi6" disabled>
+
+        <p id="bilinenSayilar"></p>
+        <p id="bilinenSayiAdedi"></p>
+
+        <script>
+            
+            var tahminButonu=document.getElementById("tahminButonu");
+            var kuraCekButonu=document.getElementById("kuraCekBtn");
+            var tahminEdilenSayilar =[];
+            var lotoSayilari= [];
+            var bilinenSayilar=[];
+            var sayi1=document.getElementById("sayi1");
+            var sayi2=document.getElementById("sayi2");
+            var sayi3=document.getElementById("sayi3");
+            var sayi4=document.getElementById("sayi4");
+            var sayi5=document.getElementById("sayi5");
+            var sayi6=document.getElementById("sayi6");
+
+            tahminButonu.addEventListener("click",function(event){
+              
+                
+
+                for(const sayi of tahminEdilenSayilar){
+                    if(sayi>49 || sayi<1){
+                        alert("1-49 sayıları arasında tahminler girmelisiniz!");
+                        tahminButonu.disabled=false;
+                       return;
+                    }
+                }
+                var siraliTsay = tahminEdilenSayilar.sort(function(a, b) {
+                    return a - b; // Küçükten büyüğe sıralama
+                });
+                
+                for (let i = 0; i < siraliTsay.length; i++) {
+                    document.getElementById(`sayi${i+1}`).value = siraliTsay[i];
+                }
+                tahminButonu.disabled=true;
+                document.getElementById("tahminlbl").innerHTML="Tahminler girildi.";
+                kuraCekButonu.disabled=false;
+            });
+
+
+            kuraCekButonu.addEventListener("click",function(){
+                lotoSayilari=[];
+                for(let i=0;i<6;i++){
+                    let lotonmb= Math.floor(Math.random() * 49) + 1;
+                    
+                    if(!lotoSayilari.includes(lotonmb)){
+                lotoSayilari.push(lotonmb);
+                    }
+                    else{
+                        i--;
+                    }
+              
+                }
+
+                for(let i=0;i<lotoSayilari.length;i++){
+
+                    if(lotoSayilari.includes(tahminEdilenSayilar[i])){
+                        bilinenSayilar.push(tahminEdilenSayilar[i]);
+                    }
+                }
+
+                document.getElementById("bilinenSayilar").innerHTML="Bilinen Sayılar: " + bilinenSayilar.join(",");
+                document.getElementById("bilinenSayiAdedi").innerHTML="Bilinen Sayı Adedi: " +bilinenSayilar.length;
+
+              var siraliLsay = lotoSayilari.sort(function(a, b) {
+                    return a - b; // Küçükten büyüğe sıralama
+                });
+                
+                for (let i = 0; i < siraliLsay.length; i++) {
+                    document.getElementById(`lotosayi${i+1}`).value = siraliLsay[i];
+                }
+
+
+            });
+
+
+
+            sayi1.addEventListener("blur",function(){
+                var inputValue= parseInt(sayi1.value);
+                if (isNaN(inputValue)) {
+                    return;
+                }
+                if(tahminEdilenSayilar.includes(inputValue)){
+                    alert("Aynı tahmin bir kez girilebilir.");
+                    sayi1.value="";
+                }
+                else{
+                   
+                tahminEdilenSayilar[0]=inputValue;
+                }
+            });
+
+            sayi2.addEventListener("blur",function(){
+                var inputValue= parseInt(sayi2.value);
+                if (isNaN(inputValue)) {
+                    return;
+                }
+                if(tahminEdilenSayilar.includes(inputValue)){
+                    alert("Aynı tahmin bir kez girilebilir.");
+                    sayi2.value="";
+                }
+                else{
+                    if(inputValue==null || inputValue=="" ){
+                        return;
+                    }
+                tahminEdilenSayilar[1]=inputValue;
+                }
+            });
+
+            
+            sayi3.addEventListener("blur",function(){
+                var inputValue= parseInt(sayi3.value);
+                if (isNaN(inputValue)) {
+                    return;
+                }
+                if(tahminEdilenSayilar.includes(inputValue)){
+                    alert("Aynı tahmin bir kez girilebilir.");
+                    sayi3.value="";
+                }
+                else{
+                    if(inputValue==null || inputValue=="" ){
+                        return;
+                    }
+                tahminEdilenSayilar[2]=inputValue;
+                }
+            });
+
+            
+            sayi4.addEventListener("blur",function(){
+                var inputValue= parseInt(sayi4.value);
+                if (isNaN(inputValue)) {
+                    return;
+                }
+                if(tahminEdilenSayilar.includes(inputValue)){
+                    alert("Aynı tahmin bir kez girilebilir.");
+                    sayi4.value="";
+                }
+                else{
+                    if(inputValue==null || inputValue=="" ){
+                        return;
+                    }
+                tahminEdilenSayilar[3]=inputValue;
+                }
+            });
+
+            
+            sayi5.addEventListener("blur",function(){
+                var inputValue= parseInt(sayi5.value);
+                if (isNaN(inputValue)) {
+                    return;
+                }
+                if(tahminEdilenSayilar.includes(inputValue)){
+                    alert("Aynı tahmin bir kez girilebilir.");
+                    sayi5.value="";
+                }
+                else{
+                    if(inputValue==null || inputValue=="" ){
+                        return;
+                    }
+                tahminEdilenSayilar[4]=inputValue;
+                }
+            });
+
+            
+            sayi6.addEventListener("blur",function(){
+                var inputValue= parseInt(sayi6.value);
+                if (isNaN(inputValue)) {
+                    return;
+                }
+                if(tahminEdilenSayilar.includes(inputValue)){
+                    alert("Aynı tahmin bir kez girilebilir.");
+                    sayi6.value="";
+                }
+                else{
+                    if(inputValue==null || inputValue=="" ){
+                        return;
+                    }
+                tahminEdilenSayilar[5]=inputValue;
+                }
+            });
+
+        </script>
+    </body>
+</html>
